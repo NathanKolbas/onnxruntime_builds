@@ -35,8 +35,8 @@ jobs:
         if: matrix.os == 'macOS-latest'
         run: >
           dart run ./tool/build.dart precompile-binaries -v
-            --repository NathanKolbas/onnxruntime_builds
-            --cmake_extra_defines "CMAKE_POLICY_VERSION_MINIMUM=3.5"
+          --repository NathanKolbas/onnxruntime_builds
+          --cmake_extra_defines "CMAKE_POLICY_VERSION_MINIMUM=3.5"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
           PRIVATE_KEY: ${{ secrets.RELEASE_PRIVATE_KEY }}
