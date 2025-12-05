@@ -29,7 +29,7 @@ class PrecompileBinaries {
   final RepositorySlug repositorySlug;
   final List<Target> targets;
   final bool includeAndroid;
-  final String? cmakeExtraDefines;
+  final List<String>? cmakeExtraDefines;
   final String? tempDir;
 
   static String fileName(Target target, String name) {
@@ -54,7 +54,7 @@ class PrecompileBinaries {
     log.info('Precompiling binaries for $targets');
 
     final hash = LibraryHash.compute();
-    log.info('Computed crate hash: $hash');
+    log.info('Computed library hash: $hash');
 
     final String tagName = 'precompiled_$hash';
 

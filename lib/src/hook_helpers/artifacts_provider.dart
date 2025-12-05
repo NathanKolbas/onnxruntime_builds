@@ -102,7 +102,7 @@ final log = Logger('artifacts_provider');
 //
 //     final start = Stopwatch()..start();
 //     final crateHash = LibraryHash.compute();
-//     log.fine('Computed crate hash $crateHash in ${start.elapsedMilliseconds}ms');
+//     log.fine('Computed library hash $crateHash in ${start.elapsedMilliseconds}ms');
 //
 //     final downloadedArtifactsDir =
 //         path.join(environment.targetTempDir, 'precompiled', crateHash);

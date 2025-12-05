@@ -28,11 +28,12 @@ class BuildTarget extends Build {
     super.appleDeployTarget,
   });
 
-  static BuildTarget fromTarget({required Target target, String? cmakeExtraDefines}) {
-    cmakeExtraDefines ??= '';
+  static BuildTarget fromTarget({required Target target, List<String>? cmakeExtraDefines}) {
+    cmakeExtraDefines ??= [];
+    cmakeExtraDefines.add('onnxruntime_BUILD_UNIT_TESTS=OFF');
 
     if (target.isMacOS) {
-      cmakeExtraDefines = 'CMAKE_OSX_ARCHITECTURES=${target.darwinArch} $cmakeExtraDefines'.trim();
+      cmakeExtraDefines.add('CMAKE_OSX_ARCHITECTURES=${target.darwinArch}');
     }
 
     return BuildTarget._(

@@ -473,8 +473,9 @@ class PrecompileBinariesCommand extends Command {
         defaultsTo: false,
         help: 'Includes Android targets in build.',
       )
-      ..addOption(
+      ..addMultiOption(
         'cmake_extra_defines',
+        splitCommas: false,
         help: 'Extra CMake definitions (-D<key>=<value>). Provide as <key>=<value>.',
         valueHelp: 'CMAKE_EXTRA_DEFINES [CMAKE_EXTRA_DEFINES ...]',
       )
@@ -527,7 +528,7 @@ class PrecompileBinariesCommand extends Command {
       repositorySlug: RepositorySlug.full(argResults['repository'] as String),
       targets: targets,
       includeAndroid: argResults['android'] as bool,
-      cmakeExtraDefines: argResults['cmake_extra_defines'] as String?,
+      cmakeExtraDefines: argResults['cmake_extra_defines'] as List<String>?,
       tempDir: argResults['temp-dir'] as String?,
     );
 

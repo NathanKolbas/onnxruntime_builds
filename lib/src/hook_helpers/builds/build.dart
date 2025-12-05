@@ -47,7 +47,7 @@ class Build {
   final bool buildSharedLib;
   final bool compileNoWarningAsError;
   final bool skipSubmoduleSync;
-  final String? cmakeExtraDefines;
+  final List<String>? cmakeExtraDefines;
 
   // --- WINDOWS CONFIG ---
   final bool compileForArm64;
@@ -139,11 +139,18 @@ class Build {
       '--recursive',
     ], workingDirectory: Environment.projectRootDir);
 
-    log.info(Environment.onnxRuntimeDir);
+    String? buildDir = this.buildDir;
+    // Android targets need to separate the build outputs otherwise they will
+    // all be under "Android" which will cause failures when building multiple
+    // different architectures
+    if (android && buildDir == null) {
+      buildDir = 'Android-$androidAbi';
+    }
+
     await runCommandStreamStdout(
       Platform.isWindows ? '.\\build.bat' : './build.sh',
       [
-        if (buildDir != null) ...['--build_dir', buildDir!],
+        if (buildDir != null) ...['--build_dir', buildDir],
         ...['--config', config],
         if (update) '--update',
         if (build) '--build',
@@ -213,13 +220,16 @@ class Build {
     return [
       if (compileNoWarningAsError) '--compile_no_warning_as_error',
       if (skipSubmoduleSync) '--skip_submodule_sync',
+      if (cmakeExtraDefines != null) ...cmakeExtraDefines!.fold<Iterable<String>>(
+        [],
+        (defs, d) => [...defs, '--cmake_extra_defines', d],
+      ),
 
       if (Platform.isWindows) ...[
         if (compileForArm64) '--arm64',
       ],
 
       if (Platform.isMacOS) ...[
-        if (cmakeExtraDefines != null) ...['--cmake_extra_defines', cmakeExtraDefines!],
         if (useCoreMl) '--use_coreml',
       ],
 
