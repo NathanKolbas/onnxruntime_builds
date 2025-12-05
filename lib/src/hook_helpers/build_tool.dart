@@ -69,7 +69,7 @@ class BuildCommand extends Command {
         help: 'Build a shared library for ONNXRuntime.',
       )
       ..addOption(
-        '--cmake_extra_defines',
+        'cmake_extra_defines',
         help: 'Extra CMake definitions (-D<key>=<value>). Provide as <key>=<value>.',
         valueHelp: 'CMAKE_EXTRA_DEFINES [CMAKE_EXTRA_DEFINES ...]',
       )
