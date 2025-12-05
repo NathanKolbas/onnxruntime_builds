@@ -68,6 +68,11 @@ class BuildCommand extends Command {
         defaultsTo: Build.dBuildSharedLib,
         help: 'Build a shared library for ONNXRuntime.',
       )
+      ..addOption(
+        '--cmake_extra_defines',
+        help: 'Extra CMake definitions (-D<key>=<value>). Provide as <key>=<value>.',
+        valueHelp: 'CMAKE_EXTRA_DEFINES [CMAKE_EXTRA_DEFINES ...]',
+      )
 
       // Windows config
       ..addFlag(
@@ -165,6 +170,7 @@ class BuildCommand extends Command {
       parallel: argResults['parallel'],
       skipTests: argResults['skip_tests'],
       buildSharedLib: argResults['build_shared_lib'],
+      cmakeExtraDefines: argResults['cmake_extra_defines'],
 
       // Windows specific
       compileForArm64: argResults['arm64'],
@@ -447,6 +453,12 @@ class SetOnnxruntimeVersionCommand extends Command {
 class PrecompileBinariesCommand extends Command {
   PrecompileBinariesCommand() {
     argParser
+      ..addFlag(
+        "verbose",
+        abbr: "v",
+        defaultsTo: false,
+        help: "Enable verbose logging",
+      )
       ..addOption(
         'repository',
         mandatory: true,
@@ -462,14 +474,13 @@ class PrecompileBinariesCommand extends Command {
         help: 'Includes Android targets in build.',
       )
       ..addOption(
+        'cmake_extra_defines',
+        help: 'Extra CMake definitions (-D<key>=<value>). Provide as <key>=<value>.',
+        valueHelp: 'CMAKE_EXTRA_DEFINES [CMAKE_EXTRA_DEFINES ...]',
+      )
+      ..addOption(
         'temp-dir',
         help: 'Directory to store temporary build artifacts',
-      )
-      ..addFlag(
-        "verbose",
-        abbr: "v",
-        defaultsTo: false,
-        help: "Enable verbose logging",
       );
   }
 
@@ -516,6 +527,7 @@ class PrecompileBinariesCommand extends Command {
       repositorySlug: RepositorySlug.full(argResults['repository'] as String),
       targets: targets,
       includeAndroid: argResults['android'] as bool,
+      cmakeExtraDefines: argResults['cmake_extra_defines'] as String?,
       tempDir: argResults['temp-dir'] as String?,
     );
 

@@ -20,6 +20,7 @@ class PrecompileBinaries {
     required this.repositorySlug,
     required this.targets,
     bool? includeAndroid,
+    this.cmakeExtraDefines,
     this.tempDir,
   }) : includeAndroid = includeAndroid ?? false;
 
@@ -28,6 +29,7 @@ class PrecompileBinaries {
   final RepositorySlug repositorySlug;
   final List<Target> targets;
   final bool includeAndroid;
+  final String? cmakeExtraDefines;
   final String? tempDir;
 
   static String fileName(Target target, String name) {
@@ -87,7 +89,7 @@ class PrecompileBinaries {
 
       log.info('Building for $target');
 
-      final builder = BuildTarget.fromTarget(target: target);
+      final builder = BuildTarget.fromTarget(target: target, cmakeExtraDefines: cmakeExtraDefines);
       final res = await builder.compile();
 
       final assets = <CreateReleaseAsset>[];
